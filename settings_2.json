@@ -1,0 +1,341 @@
+{
+
+	"target":{
+		"title":"Target Product and Company for this report:",
+		"products categories": "Fungicides, insecticides & acaricides,  herbicides, wound dressings",
+		"company": "New Zealand Wine Ltd",
+		"usage": "These products are used by New Zealand Wine Ltd in their wine fields",
+		"goal": "New Zealand Wine Ltd has asked Hazel to generate a Hazard analysis report for Fungicides, insecticides & acaricides,  herbicides, wound dressings. ",
+		"report goal": "The goal for this report is to find out which chemical has the most and the least hazard. Which chemical should be preferred for a category ",
+		"details": "New Zealand Wine Ltd is New Zealand most popular whine growers with the largest wine fields in the country"
+	},
+
+	"report_generation_order": [
+		"reportTableFungicides",
+		"reportTableInsecticides",
+		"reportTableHerbicides",
+		"reportTableWoundDressing",
+		"analyzeTableFungicides",
+		"analyzeTableInsecticides",
+		"analyzeTableHerbicides",
+		"analyzeTableWoundDressing",
+		"finalSummary",
+		"referencesFungicides",
+		"referencesInsecticides",
+		"referencesHerbicides",
+		"referencesWoundDressing"
+	],
+
+
+	"reportTableFungicides": {
+		"blockType": "tableReporting",
+		"excel":"excels\\fungicides.xlsx",
+		"title": "Fungicides used in Analysis:",
+		"userPrompts": [
+			"The provided table includes only Fungicides, Other type of products like insecticides, herbicides etc, will be provided separately",
+			"generate only for fungicides only",
+			"Dont include headings, or bullets, just give two paragraph response"
+		]
+	},
+
+	"reportTableInsecticides": {
+		"blockType": "tableReporting",
+		"excel":"excels\\insecticides.xlsx",
+		"title": "Insecticides and acaricides used in Analysis:",
+		"userPrompts": [
+			"The provided table includes only Insecticides and acaricides, Other type of products like Fungicides, herbicides etc, will be provided separately",
+			"generate only for Insecticides and acaricides only",
+			"Dont include headings, or bullets, just give  two paragraph response"
+		]
+	},
+
+	"reportTableHerbicides": {
+		"blockType": "tableReporting",
+		"excel":"excels\\herbicides.xlsx",
+		"title": "Herbicides used in Analysis:",
+		"userPrompts": [
+			"The provided table includes herbicides, Other type of products like insecticides, insecticides etc, will be provided separately",
+			"generate only for herbicides only",
+			"Dont include headings, or bullets, just give two paragraph response"
+		]
+	},
+
+	"reportTableWoundDressing": {
+		"blockType": "tableReporting",
+		"excel":"excels\\wound_dressing.xlsx",
+		"title": "Wound dressing used in Analysis:",
+		"userPrompts": [
+			"The provided table includes wound dressing only, Other type of products like insecticides, insecticides etc, will be provided separately",
+			"generate only for wound dressing only",
+			"Dont include headings, or bullets, just give two paragraph response"
+		]
+	},
+
+	"analyzeTableFungicides": {
+		"blockType": "tableAnalysis",
+		"excel":"excels\\fungicides.xlsx",
+		"title": "Fungicides Analysis:",
+		"bubbleChart": {
+			"generate": true,
+			"type": "rankBubbles"
+		},
+		"userPrompts": [
+			"The provided table includes only Fungicides, Other type of products like insecticides, herbicides etc, will be provided separately",
+			"generate only for fungicides only",
+			"Dont include headings, or bullets, just give one or two paragraph response"
+		]
+	},
+
+	"analyzeTableInsecticides": {
+		"blockType": "tableAnalysis",
+		"excel":"excels\\insecticides.xlsx",
+		"title": "Insecticides and acaricides Analysis:",
+		"bubbleChart": {
+			"generate": true,
+			"type": "rankBubbles"
+		},
+		"userPrompts": [
+			"The provided table includes only Insecticides and acaricides, Other type of products like Fungicides, herbicides etc, will be provided separately",
+			"generate only for Insecticides and acaricides only",
+			"Dont include headings, or bullets, just give one or two paragraph response"
+		]
+	},
+
+	"analyzeTableHerbicides": {
+		"blockType": "tableAnalysis",
+		"excel":"excels\\herbicides.xlsx",
+		"title": "Herbicides Analysis:",
+		"bubbleChart": {
+			"generate": true,
+			"type": "rankBubbles",
+			"zoomRange": [0.5, 0.8]
+		},
+		"userPrompts": [
+			"The provided table includes herbicides, Other type of products like insecticides, insecticides etc, will be provided separately",
+			"generate only for herbicides only",
+			"Dont include headings, or bullets, just give one or two paragraph response"
+		]
+	},
+
+	"analyzeTableWoundDressing": {
+		"blockType": "tableAnalysis",
+		"excel":"excels\\wound_dressing.xlsx",
+		"title": "Wound dressing Analysis:",
+		"bubbleChart": {
+			"generate": true,
+			"type": "rankBubbles"
+		},
+		"userPrompts": [
+			"The provided table includes wound dressing only, Other type of products like insecticides, insecticides etc, will be provided separately",
+			"generate only for wound dressing only",
+			"Dont include headings, or bullets, just give one or two paragraph response"
+		]
+	},
+
+	"finalSummary": {
+		"blockType": "summary",
+		"userPrompts": [
+			"suggest based on each category type which chemical has the least harm",
+			"summarize comparative analysis for each category here, and suggest 3 chemicals which least hazardeous scores"
+		]
+	},
+
+
+
+
+
+	"referencesFungicides": {
+		"blockType": "references",
+		"title": "Fungicides References",
+		"excel":"excels\\fungicides.xlsx"
+	},
+
+	"referencesInsecticides": {
+		"blockType": "references",
+		"title": "Insecticides References",
+		"excel":"excels\\insecticides.xlsx"
+	},
+
+	"referencesHerbicides": {
+		"blockType": "references",
+		"title": "Herbicides References",
+		"excel":"excels\\herbicides.xlsx"
+	},
+
+	"referencesWoundDressing": {
+		"blockType": "references",
+		"title": "Wound Dressing References",
+		"excel":"excels\\wound_dressing.xlsx"
+	},
+
+
+
+
+
+
+
+	"tableAnalysis": {
+		"title": "Results",
+		"usePrevResults": false,
+		"rescale":false,
+		"rescaleRange": 1000,
+		"excel":"excels\\Report2.xlsx",
+		"sheet":"Rank",
+		"columns": [
+			"Chemical Name",
+			"Toxicity Combined Score (Raw)",
+			"Exposure Combined Score (Raw)",
+			"Emerging Concern Score (raw)"
+		],
+		"bubbleChart": {
+			"generate": true,
+			"type": "rankBubbles",
+			"zoomIn": true,
+			"zoomRange": [0.35, 0.65],
+			"DIA_LARGEST_BUBLE": 0.16,
+			"X_RANGE_MAX": 1.5,
+			"categoryBubbles": [
+				"Chemical Name",
+				"Toxicity Combined Score (Raw)",
+				"Exposure Combined Score (Raw)",
+				"Emerging Concern Score (raw)",
+				"Category"
+			],
+			"rankBubbles": [
+				"Chemical Name",
+				"Toxicity Combined Score (Raw)",
+				"Exposure Combined Score (Raw)",
+				"Emerging Concern Score (raw)"
+			]
+		},
+		"systemPrompts":[
+			"You are a helpful assistant, your job is to analyze the provided table and report how the chemicals and products compare based on different parameters. ",
+			"The table is provided in a CSV format with commas separating the columns and backslash N (backslash-N) is used to move to the next line. ",
+			"The Table is provided inside the Square brackets",
+			"The First Row of the Table provides the header information. It provides the chemical name and the parameter name used in the analysis. ",
+			"This Report is Generated by Generator Company and it is for Target Company, their details are also provided below. "
+		],
+		"userPrompts": [
+			"Your job is to analyze the provided table along with other details and report how the chemicals and products compare based on different table parameters. ",
+			"Find out which chemical or product has the maximum value for a particular parameter of investigation. ",
+			"Also give the next two chemicals/ products which have larger values for a parameter",
+			"Also analyze the Target Products from the Target Company. ",
+			"Important: Please don't give scores or values or numbers for the parameters in your response. ",
+			"Start your response with something specific to the target company and product. ideas: {report generator company} did a complete analysis report for the target Product of target company based on these measures etc"
+		]
+	},
+
+
+	"tableReporting": {
+		"title": "Chemicals CAS Numbers:",
+		"excel":"default.xlsx",
+		"usePrevResults": false,
+		"sheet":"Chemicals",
+		"columns": [
+			"Chemical Name",
+			"CAS NO."
+		],
+		"systemPrompts":[
+			"You are a helpful assistant, your job is to analyze the provided table and provide some info on the table",
+			"The table is provided in a CSV format with commas separating the columns and backslash n is use to move to the next line. ",
+			"The Table is inside the Square brackets",
+			"The First Row of the Table provides the header information of the table with the chemical name ",
+			"This Report is Generated by Generator Company and it is for Target Company, their details are also provided below. "
+		],
+		"userPrompts": [
+			"You are a helpful assistant, your job is to analyze the table and provide intro for it ",
+			"Tell how many products/chemicals the are compared with for the company, just like a small table introduction",
+			"explain the table in 2 paragraphs its not a conversation and use the previous information whenever provided"
+		]
+	},
+
+
+	"methodology": {
+		"1": [
+			"Substances are evaluated on three primary dimensions: toxicity, exposure, and emerging concern. ",
+			"Thirty-four toxicity parameters and nine exposure parameters are used, representative of key environmental and human health measures, and consistent with international standardised methodology for assessing environmental and human health risk. ",
+			"The tool also uses four parameters to express 'emerging concern'.",
+			"The methodology is designed with sufficient coverage and inbuilt redundancy so that when data for some parameters are unavailable, a robust comparison can still be made, thus the tool can compare like-with-like even when different data points are available. "
+		],
+		"2": [
+			"The toxicity parameters cover GHS classifications, data from reputable studies, and regulatory limits set by government bodies, relating to both human and environmental health. ",
+			"A user-changeable weighting scheme allows for preferred data sources to be prioritised. ",
+			"These parameters are also categorised as acute/chronic and mammalian/aquatic to refine the prioritisation process with respect to end-use scenarios, using relative weightings. ",
+			"In populating these parameters, priority is given to data gathered from common model species, to ensure uniformity among values for substances being compared. ",
+			"Exposure limits from multiple regulatory bodies enable the use of those most relevant to the user's locality."
+		],
+		"3": [
+			"The exposure dimension includes measures relating to degradability, mobility, bioaccumulation, volume of use, and recorded presence in water monitoring programmes. "
+		],
+		"4": [
+			"Raw data are drawn from several reputable sources and appropriately transformed (by log-transformation and normalisation) to a scale from 0 (least concern, out of the substances within the group) to 1 (greatest concern)."
+		],
+		"5": [
+			"Measures of emerging concern are derived from appearances in academic journals published by Taylor and Francis Publishing Group and reflect not only the number of references to a particular substance but also their change over time. ",
+			"ANOTHER SENTENCE"
+		],
+
+		"6": [
+			"This is the first sentence. ",
+			"This is a second sentence. "
+		]
+
+	},
+
+	"summary":{
+		"title": "Summary",
+		"usePrevResults": true,
+		"systemPrompts": [
+			"You are a helpful assistant, Your task is to create a summary of the the analysis done buy the Hazel for Target Company."
+		],
+		"userPrompts": [
+			"Generate one paragraph summary for this analysis report, the paragram should have more than 12 lines",
+			"Don't use the word parameters, and don't mention anything about the values or numbers or quantities"
+		]
+	},
+
+	"introduction": {
+		"title": "Introduction",
+		"usePrevResults": true,
+		"systemPrompts": [
+			"You are a helpful assistant, Your task is to create an introduction for the analysis report done by Hazel for Target Company."
+		],
+		"userPrompts": [
+			"Generate one paragraph introduction for this analysis report, the paragram should have more than 12 lines",
+			"Start your response with something specific to the target company and product. ideas: {report generator company} did a complete analysis report for the target Product of target company based on these measures etc"
+		]
+	},
+
+	"references": {
+		"title": "",
+		"excel":"default.xlsx",
+		"sheet":"Chemicals",
+		"columns": [
+			"Chemical Name",
+			"References"
+		]
+	},
+
+	"generator":{
+		"title": "Report Generating Company:",
+		"name": "Hazard Evaluation Ltd (HazEL)",
+		"intro": "Hazard Evaluation Ltd (or HazEL) is a New Zealand based company whose purpose is to reduce chemical harm. Our Software tool ranks chemicals according to their environmental and human health effects, and alerts users to new information that indicates a product might be considered a chemical of emerging concern.",
+		"mission": "Our mission is to build simple software tools that improve efficiency in chemical decision making.",
+		"details": "HazEL has performed Chemical Risk Analysis of different chemicals of interest for the target company and compared the chemicals based on different parameters provided in the table to find out hazard concerns of the chemicals"
+	},
+
+	"tableInfo":{
+		"prompt": "The following is the details on the Table columns. The table also provided in this message",
+		"Chemical Name": "This column provides the names of different chemicals or products used for the hazard analysis",
+		"Toxicity Combined Score (Raw)": "This column provides the toxicity score of each product. The bigger the value the more toxic the product is",
+		"Exposure Combined Score (Raw)": "This column of the table provides exposure score for each chemical. Larger value means more chances of exposure to the chemical",
+		"Emerging Concern Score (raw)": "The emerging concern score provides information about the status of investigative research for the chemicals. Lager value suggest that  research interest has been relatively high, and more information on the product is likely to become available soon",
+		"Category": "The category column combines the different products used in the analysis into different groups based on their use cases, applications or types. ",
+		"CAS NO.": " CAS Registry Number is a unique identification number assigned by the Chemical Abstracts Service in the US to every chemical substance described in the open scientific literature."
+	},
+
+	"openAI": {
+	  "apikey": "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",
+	  "model": "gpt-3.5-turbo"
+	}
+}

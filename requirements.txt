@@ -1,0 +1,7 @@
+openpyxl
+pandas
+openai
+python-docx
+kaleido
+micropython-fcntl
+plotly
