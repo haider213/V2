@@ -8,11 +8,11 @@ from docx import Document
 
 
 
-docFile = "report\\Report.docx"
+docFile = "report\\Report_cleanery.docx"
 
 document = Document()
 
-jsonPath = "settings.json"
+jsonPath = "settings_cleanery_2.json"
 with open(jsonPath) as f:
     settings = json.load(f)
 
