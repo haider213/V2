@@ -9,16 +9,17 @@ import plotly.express as px
 import pandas as pd
 from plotly.subplots import make_subplots
 
+
 class tableAnalysis:
 
-    def __init__(self,  cusTable, settings):
+    def __init__(self, cusTable, settings):
 
         # Getting The Title for This Section
         allKeys = list(cusTable.keys())
         if "title" in allKeys:
             self.title = cusTable['title']
         else:
-            self.title  = settings['tableAnalysis']['title']
+            self.title = settings['tableAnalysis']['title']
 
         # Use Previous Results for This Section
         if "usePrevResults" in allKeys:
@@ -61,7 +62,6 @@ class tableAnalysis:
         else:
             self.userPrompts = settings['tableAnalysis']['userPrompts']
 
-
         # GETTING ALL OF THE DEFAULT SETTING FOR BUBBLE CHART
         self.isBubbleChartRequired = settings['tableAnalysis']["bubbleChart"]["generate"]
         self.bubbleChartType = settings['tableAnalysis']["bubbleChart"]["type"]
@@ -88,21 +88,16 @@ class tableAnalysis:
             if "X_RANGE_MAX" in bubbleKeys:
                 self.X_RANGE_MAX = cusTable["bubbleChart"]["X_RANGE_MAX"]
 
-
-
-
         # If Bubble Chart Needs to be Generated
         if self.isBubbleChartRequired:
-
-
             # Chart Settings!
             self.FIG_HEIGTH = 500
             self.FIG_WIDTH = 500 + int((self.X_RANGE_MAX - 1) * 500)
 
             # Custom Legends !!!
             self.LEGEND_RADIUS = 0.008
-            self.LEGEND_TOP_X  = 1 + 0.04
-            self.LEGEND_TOP_Y  = 0.96
+            self.LEGEND_TOP_X = 1 + 0.04
+            self.LEGEND_TOP_Y = 0.96
             self.LEGEND_SPACING = 0.034
 
             # ANNOTATION
@@ -110,11 +105,9 @@ class tableAnalysis:
             self.HEIGHT_ALPHABET = 0.03
 
             # ANNOTATION LEGENDS
-            self.ANNOTATION_LEGEND_BOT_X   = 1 + 0.04
-            self.ANNOTATION_LEGEND_BOT_Y   = 0.01
+            self.ANNOTATION_LEGEND_BOT_X = 1 + 0.04
+            self.ANNOTATION_LEGEND_BOT_Y = 0.01
             self.ANNOTATION_LEGEND_SPACING = 0.025
-
-
 
         self.settings = settings
         self.gptModel = settings["openAI"]["model"]
@@ -129,7 +122,8 @@ class tableAnalysis:
         if self.rescale:
             for col in aTable.columns:
                 if is_numeric_dtype(aTable[col]):
-                    aTable[col] = ((aTable[col] - aTable[col].min())/(aTable[col].max()-aTable[col].min())*self.settings['tableAnalysis']['rescaleRange']).astype(int)
+                    aTable[col] = ((aTable[col] - aTable[col].min()) / (aTable[col].max() - aTable[col].min()) *
+                                   self.settings['tableAnalysis']['rescaleRange']).astype(int)
 
         # Adding The First Row Of TABLE!
         textTable = "\n \n Table: [ \n"
@@ -144,7 +138,6 @@ class tableAnalysis:
 
         textTable = textTable + "] \n"
         return textTable
-
 
     # Generating The Text Prompt for The Table!
     def generateTablePrompts(self, excelManager):
@@ -206,7 +199,6 @@ class tableAnalysis:
         # returning The Requested Table Columns!
         return table[columns]
 
-
     def analyzeGPT(self, client):
 
         if self.apiPrompt == []:
@@ -217,12 +209,44 @@ class tableAnalysis:
 
         chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
         self.chatGPTResponse = chat_completion.choices[0].message.content
-        return self.chatGPTResponse
+        print(self.chatGPTResponse)
+        print("1-Accept Response")
+        print("2-Change Response")
+        change_choice = input("Enter the number of your choice: ")
+        if change_choice == "1":
+            pass
+        elif change_choice == "2":
+            print("The current prompts are: ", self.apiPrompt)
+            print('1- Make it brief')
+            print('2- Add more details')
+            print('3- Make it formal')
+            change_to_prompt = input("Enter the number of your choice: ")
+            if change_to_prompt == "1":
+                self.apiPrompt[0]['content'] = "The table has been analyzed."
+                chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
+                self.chatGPTResponse = chat_completion.choices[0].message.content
+            elif change_to_prompt == "2":
+                self.apiPrompt[0]['content'] = "The table has been analyzed. Please provide a detailed analysis."
+                chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
+                self.chatGPTResponse = chat_completion.choices[0].message.content
+            elif change_to_prompt == "3":
+                self.apiPrompt[0]['content'] = "The table has been analyzed. Please provide a formal analysis."
+                chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
+                self.chatGPTResponse = chat_completion.choices[0].message.content
+            else:
+                print("Invalid input")
+                sys.exit()
 
+
+
+        else:
+            print("Invalid input")
+            sys.exit()
+        return self.chatGPTResponse
 
     def generateReport(self, document, excelManager):
 
-        document.add_heading(self.title,2)
+        document.add_heading(self.title, 2)
 
         # Writing The Paragraphs
         splitParas = self.chatGPTResponse.split("\n")
@@ -231,12 +255,11 @@ class tableAnalysis:
             paragraph = document.add_paragraph(para)
             paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
-
         if self.isBubbleChartRequired:
-            self.figures.append(self.generateBubbleChart(excelManager, zoomVersion = False))
+            self.figures.append(self.generateBubbleChart(excelManager, zoomVersion=False))
             # If zoomIn Figure Required!
             if self.zoomIn:
-                self.figures.append(self.generateBubbleChart(excelManager, zoomVersion = True))
+                self.figures.append(self.generateBubbleChart(excelManager, zoomVersion=True))
 
         imagePath = []
         for figInd in range(len(self.figures)):
@@ -244,21 +267,15 @@ class tableAnalysis:
             self.figures[figInd].write_image(path)
             imagePath.append(path)
 
-
         # Writing The Figure onto the Document
         for path in imagePath:
-            document.add_picture(path,width=Inches(5.0))
-
-
-
-
+            document.add_picture(path, width=Inches(5.0))
 
     def getTitle(self):
         return self.title
 
     def getChatGPTResponse(self):
         return self.chatGPTResponse
-
 
     def getColorSchemeAndCodes(self, table):
         colorCode = []
@@ -285,7 +302,8 @@ class tableAnalysis:
             allCategories = ["Less than 0.4", "Between 0.4 and 0.5", "Between 0.5 and 0.6", "Greater than 0.6"]
 
             for idx in range(len(table.index)):
-                rank = math.sqrt(table['Toxicity Combined Score (Raw)'][idx] * table['Exposure Combined Score (Raw)'][idx])
+                rank = math.sqrt(
+                    table['Toxicity Combined Score (Raw)'][idx] * table['Exposure Combined Score (Raw)'][idx])
                 if rank < 0.4:
                     colorCode.append(0)
                 elif rank < 0.5:
@@ -302,12 +320,11 @@ class tableAnalysis:
 
         return colorCode, colors, allCategories
 
-
-    def generateBubbleChart(self, excelManager, zoomVersion = False):
+    def generateBubbleChart(self, excelManager, zoomVersion=False):
         table = self.requestingTable(excelManager, self.bubbleChartColumns)
 
         # DROP NA VALUES!!!!
-        table=table.dropna()
+        table = table.dropna()
 
         colorCode, colors, allCategories = self.getColorSchemeAndCodes(table)
         table.insert(2, "colorCode", colorCode, True)
@@ -316,7 +333,8 @@ class tableAnalysis:
         if zoomVersion:
             L = self.zoomRange[0]
             H = self.zoomRange[1]
-            table = table.loc[(table['Toxicity Combined Score (Raw)'] >= L) & (table['Toxicity Combined Score (Raw)'] <= H) & (
+            table = table.loc[
+                (table['Toxicity Combined Score (Raw)'] >= L) & (table['Toxicity Combined Score (Raw)'] <= H) & (
                         table['Exposure Combined Score (Raw)'] >= L) & (table['Exposure Combined Score (Raw)'] <= H)]
 
         # Set axes ranges
@@ -331,8 +349,8 @@ class tableAnalysis:
         fig.update_yaxes(range=[-0.005, 1], row=1, col=2)
 
         if zoomVersion:
-            fig.update_xaxes(range=[self.zoomRange[0]-0.05, self.zoomRange[1]+0.02], row=1, col=1)
-            fig.update_yaxes(range=[self.zoomRange[0]-0.05, self.zoomRange[1]+0.02], row=1, col=1)
+            fig.update_xaxes(range=[self.zoomRange[0] - 0.05, self.zoomRange[1] + 0.02], row=1, col=1)
+            fig.update_yaxes(range=[self.zoomRange[0] - 0.05, self.zoomRange[1] + 0.02], row=1, col=1)
 
         # Records information of The Bubbles (ELIPS),
         # XCENTER, YCENTER, XRADIUS, YRADIUS
@@ -343,14 +361,13 @@ class tableAnalysis:
         ALPHABET_HEIGHT = 0
         ALPHABET_WIDTH = 0
         if zoomVersion:
-            LARGEST_BUBBLE_RADIUS = (self.zoomRange[1]-self.zoomRange[0])*self.DIA_LARGEST_BUBLE
-            ALPHABET_HEIGHT = (self.zoomRange[1]-self.zoomRange[0])*self.HEIGHT_ALPHABET
-            ALPHABET_WIDTH = (self.zoomRange[1]-self.zoomRange[0])*self.WIDTH_1_ALPHABET
+            LARGEST_BUBBLE_RADIUS = (self.zoomRange[1] - self.zoomRange[0]) * self.DIA_LARGEST_BUBLE
+            ALPHABET_HEIGHT = (self.zoomRange[1] - self.zoomRange[0]) * self.HEIGHT_ALPHABET
+            ALPHABET_WIDTH = (self.zoomRange[1] - self.zoomRange[0]) * self.WIDTH_1_ALPHABET
         else:
             LARGEST_BUBBLE_RADIUS = self.DIA_LARGEST_BUBLE
             ALPHABET_HEIGHT = self.HEIGHT_ALPHABET
             ALPHABET_WIDTH = self.WIDTH_1_ALPHABET
-
 
         # Data Bubbles !!!
         df = table.sort_values('Emerging Concern Score (raw)', ascending=False).reset_index(drop=True)
@@ -358,7 +375,8 @@ class tableAnalysis:
         for i in range(len(table['Chemical Name'])):
             xCenter = df['Toxicity Combined Score (Raw)'].iloc[i]
             yCenter = df['Exposure Combined Score (Raw)'].iloc[i]
-            radius = df['Emerging Concern Score (raw)'].iloc[i] / df['Emerging Concern Score (raw)'].max() * LARGEST_BUBBLE_RADIUS / 2
+            radius = df['Emerging Concern Score (raw)'].iloc[i] / df[
+                'Emerging Concern Score (raw)'].max() * LARGEST_BUBBLE_RADIUS / 2
             bubbleArray = np.append(bubbleArray, [[xCenter, yCenter, radius]], axis=0)
 
             ply_bubbles['shape_' + str(i)] = go.layout.Shape(type="circle",
@@ -391,7 +409,7 @@ class tableAnalysis:
                                                               layer="above",
                                                               line_width=4,
                                                               line_color=colors[i],
-                                                              fillcolor=colors[i], xref= 'x2', yref= 'y2')
+                                                              fillcolor=colors[i], xref='x2', yref='y2')
 
         # Custom Legend LABELS !!!
         xLabelPos = []
@@ -406,10 +424,11 @@ class tableAnalysis:
             mode="text",
             textfont_size=10,
             textposition="middle right"
-        ),row=1, col=2)
+        ), row=1, col=2)
 
         lst_shapes = list({**ply_bubbles, **ply_legends}.values())
-        fig.update_layout(shapes=lst_shapes, width=self.FIG_WIDTH, height=self.FIG_HEIGTH, margin=dict(l=50, r=50, t=50, b=50),
+        fig.update_layout(shapes=lst_shapes, width=self.FIG_WIDTH, height=self.FIG_HEIGTH,
+                          margin=dict(l=50, r=50, t=50, b=50),
                           plot_bgcolor='#F8F8F8')
 
         # SUBPLOT 1
@@ -427,19 +446,20 @@ class tableAnalysis:
         for buble in range(len(bubbleArray)):
             chemName = df['Chemical Name'].iloc[buble]
             optLoc = self.findOptimalLocAnnotation(bubbleArray=bubbleArray, bubbleNo=buble, textHeight=ALPHABET_HEIGHT,
-                                              textWidth=ALPHABET_WIDTH * len(chemName))
+                                                   textWidth=ALPHABET_WIDTH * len(chemName))
             if not optLoc.size == 0:
                 fig.add_annotation(x=optLoc[0], y=optLoc[1], text=chemName, showarrow=False, arrowhead=1,
-                                   align='center', font=dict(size=10),row=1, col=1)
+                                   align='center', font=dict(size=10), row=1, col=1)
             else:
-                optLoc = self.findOptimalLocAnnotation(bubbleArray=bubbleArray, bubbleNo=buble, textHeight=ALPHABET_HEIGHT,
-                                                  textWidth=ALPHABET_WIDTH * len(nextAnnotation))
+                optLoc = self.findOptimalLocAnnotation(bubbleArray=bubbleArray, bubbleNo=buble,
+                                                       textHeight=ALPHABET_HEIGHT,
+                                                       textWidth=ALPHABET_WIDTH * len(nextAnnotation))
                 if not optLoc.size == 0:
                     fig.add_annotation(x=optLoc[0], y=optLoc[1], text=nextAnnotation, showarrow=False, arrowhead=1,
-                                       align='center', font=dict(size=10),row=1, col=1)
+                                       align='center', font=dict(size=10), row=1, col=1)
                 else:
                     fig.add_annotation(x=bubbleArray[buble, 0], y=bubbleArray[buble, 1], text=nextAnnotation,
-                                       showarrow=False, arrowhead=1, align='center', font=dict(size=10),row=1, col=1)
+                                       showarrow=False, arrowhead=1, align='center', font=dict(size=10), row=1, col=1)
 
                 annLegends.append([nextAnnotation, chemName])
                 nextAnnotation = chr(ord(nextAnnotation) + 1)
@@ -462,7 +482,7 @@ class tableAnalysis:
             text=['<b>' + x[0] + '<b>' for x in annLegends],
             mode="text",
             textfont_size=10,
-            textposition="middle left"),row=1, col=2)
+            textposition="middle left"), row=1, col=2)
 
         fig.add_trace(go.Scatter(
             x=np.array(xANNPos) + 0.015,
@@ -471,64 +491,64 @@ class tableAnalysis:
             mode="text",
             textfont_size=10,
             textposition="middle left"
-        ),row=1, col=2)
+        ), row=1, col=2)
 
         fig.add_trace(go.Scatter(
-            x=np.array(xANNPos) +0.030,
+            x=np.array(xANNPos) + 0.030,
             y=yANNPos,
             text=[x[1] for x in annLegends],
             mode="text",
             textfont_size=9,
-            textposition="middle right"),row=1, col=2)
+            textposition="middle right"), row=1, col=2)
 
-        fig.add_vline(x=1, line_width=0.1,row=1, col=2)
-        fig.update_layout(showlegend=False, xaxis_title="Relative Toxicity", yaxis_title="Relative Likelihood of Exposure")
-        #imagePath = "images/fig.png"
-        #fig.write_image(imagePath)
+        fig.add_vline(x=1, line_width=0.1, row=1, col=2)
+        fig.update_layout(showlegend=False, xaxis_title="Relative Toxicity",
+                          yaxis_title="Relative Likelihood of Exposure")
+        # imagePath = "images/fig.png"
+        # fig.write_image(imagePath)
         return fig
 
     @staticmethod
-    def findOptimalLocAnnotation( bubbleArray, bubbleNo, textHeight, textWidth ):
+    def findOptimalLocAnnotation(bubbleArray, bubbleNo, textHeight, textWidth):
 
-        xCent  = bubbleArray[bubbleNo,0]
-        yCent  = bubbleArray[bubbleNo,1]
-        radius = bubbleArray[bubbleNo,2]
-        xRange = np.linspace(xCent-radius, xCent+radius, num=30)
-        yRange = np.linspace(yCent-radius, yCent+radius, num=30)
+        xCent = bubbleArray[bubbleNo, 0]
+        yCent = bubbleArray[bubbleNo, 1]
+        radius = bubbleArray[bubbleNo, 2]
+        xRange = np.linspace(xCent - radius, xCent + radius, num=30)
+        yRange = np.linspace(yCent - radius, yCent + radius, num=30)
         xx, yy = np.meshgrid(xRange, yRange)
-        xx     = xx.flatten()
-        yy     = yy.flatten()
+        xx = xx.flatten()
+        yy = yy.flatten()
 
         # CHECK WHICH POINT CAN BE USED AS LABEL CENTER
         posInCircle = np.empty((0, 2))
         for i in range(len(xx)):
 
-            #GET ALL OF THE POINTS i-e. TOP LEFT - TOP RIGHT - BOTTOM RIGHT - BOTTOM LEFT
-            txtCorners = np.array([[ xx[i] - textWidth/2, yy[i] + textHeight/2  ],
-                                   [ xx[i] + textWidth/2, yy[i] + textHeight/2  ],
-                                   [ xx[i] - textWidth/2, yy[i] - textHeight/2  ],
-                                   [ xx[i] + textWidth/2, yy[i] - textHeight/2  ] ])
+            # GET ALL OF THE POINTS i-e. TOP LEFT - TOP RIGHT - BOTTOM RIGHT - BOTTOM LEFT
+            txtCorners = np.array([[xx[i] - textWidth / 2, yy[i] + textHeight / 2],
+                                   [xx[i] + textWidth / 2, yy[i] + textHeight / 2],
+                                   [xx[i] - textWidth / 2, yy[i] - textHeight / 2],
+                                   [xx[i] + textWidth / 2, yy[i] - textHeight / 2]])
 
             # All of The Points MUST BE INSIDE THE CIRCLE !!!
             textFitsInside = True
             for corIdx in range(len(txtCorners)):
                 # Check If inside the Circle!
-                if (xCent - txtCorners[corIdx,0])**2 + (yCent - txtCorners[corIdx,1])**2 > radius**2:
-                        textFitsInside = False
-                        break
+                if (xCent - txtCorners[corIdx, 0]) ** 2 + (yCent - txtCorners[corIdx, 1]) ** 2 > radius ** 2:
+                    textFitsInside = False
+                    break
             if textFitsInside:
-                posInCircle = np.append(posInCircle, [[xx[i], yy[i] ]], axis=0)
-
+                posInCircle = np.append(posInCircle, [[xx[i], yy[i]]], axis=0)
 
         # Avoid Points Which are overLapped by Other Circles!!!
-        validLocs = np.empty((0,2))
+        validLocs = np.empty((0, 2))
         for i in range(len(posInCircle)):
 
-            #GET ALL OF THE POINTS i-e. TOP LEFT - TOP RIGHT - BOTTOM RIGHT - BOTTOM LEFT
-            txtCorners = np.array([[ posInCircle[i,0] - textWidth/2, posInCircle[i,1]+textHeight/2  ],
-                                   [ posInCircle[i,0] + textWidth/2, posInCircle[i,1]+textHeight/2  ],
-                                   [ posInCircle[i,0] - textWidth/2, posInCircle[i,1]-textHeight/2  ],
-                                   [ posInCircle[i,0] + textWidth/2, posInCircle[i,1]-textHeight/2  ] ])
+            # GET ALL OF THE POINTS i-e. TOP LEFT - TOP RIGHT - BOTTOM RIGHT - BOTTOM LEFT
+            txtCorners = np.array([[posInCircle[i, 0] - textWidth / 2, posInCircle[i, 1] + textHeight / 2],
+                                   [posInCircle[i, 0] + textWidth / 2, posInCircle[i, 1] + textHeight / 2],
+                                   [posInCircle[i, 0] - textWidth / 2, posInCircle[i, 1] - textHeight / 2],
+                                   [posInCircle[i, 0] + textWidth / 2, posInCircle[i, 1] - textHeight / 2]])
 
             # All of The Points MUST BE OUSIDE THE OTHER CIRCLES!!!
             noBubbleOverlaps = True
@@ -542,7 +562,8 @@ class tableAnalysis:
                 # Check if Text Box Corners are inside Other Bubbles
                 for corIdx in range(len(txtCorners)):
 
-                    if (bubbleArray[bIdx, 0] - txtCorners[corIdx,0])**2 + (bubbleArray[bIdx, 1] - txtCorners[corIdx,1])**2 < bubbleArray[bIdx,2]**2:
+                    if (bubbleArray[bIdx, 0] - txtCorners[corIdx, 0]) ** 2 + (
+                            bubbleArray[bIdx, 1] - txtCorners[corIdx, 1]) ** 2 < bubbleArray[bIdx, 2] ** 2:
                         noBubbleOverlaps = False
                         break
 
@@ -561,11 +582,11 @@ class tableAnalysis:
 
             # Append the location if Other Bubbles are not Overlapping!!!
             if noBubbleOverlaps:
-                validLocs = np.append(validLocs, [[posInCircle[i,0], posInCircle[i,1] ]], axis=0)
-        #return validLocs
+                validLocs = np.append(validLocs, [[posInCircle[i, 0], posInCircle[i, 1]]], axis=0)
+        # return validLocs
         # Choose The location Nearest to the center!!!
         if len(validLocs) > 0:
-            minIdx = np.argmin((validLocs[:,0]-xCent)**2 + (validLocs[:,1]-yCent)**2)
+            minIdx = np.argmin((validLocs[:, 0] - xCent) ** 2 + (validLocs[:, 1] - yCent) ** 2)
             return validLocs[minIdx, :]
         else:
-            return np.empty((0,2))
+            return np.empty((0, 2))

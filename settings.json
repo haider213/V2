@@ -342,7 +342,7 @@
 	},
 
 	"openAI": {
-	  "apikey": "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",
+	  "apikey": "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",
 	  "model": "gpt-3.5-turbo"
 	}
 }
