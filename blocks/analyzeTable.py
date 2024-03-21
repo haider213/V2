@@ -208,7 +208,7 @@ class tableAnalysis:
             sys.exit()
 
         chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
-        self.chatGPTResponse = chat_completion.choices[0].message.content
+        self.chatGPTResponse= chat_completion.choices[0].message.content
         print(self.chatGPTResponse)
         print("1-Accept Response")
         print("2-Change Response")
@@ -222,15 +222,17 @@ class tableAnalysis:
             print('3- Make it formal')
             change_to_prompt = input("Enter the number of your choice: ")
             if change_to_prompt == "1":
-                self.apiPrompt[0]['content'] = "The table has been analyzed."
-                chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
-                self.chatGPTResponse = chat_completion.choices[0].message.content
+                pass
+
             elif change_to_prompt == "2":
-                self.apiPrompt[0]['content'] = "The table has been analyzed. Please provide a detailed analysis."
+
+                self.apiPrompt[0]['content'] = ("This is the response for the analysis of the table. Please provide a "
+                                                "detailed analysis.")+ self.chatGPTResponse
                 chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
                 self.chatGPTResponse = chat_completion.choices[0].message.content
             elif change_to_prompt == "3":
-                self.apiPrompt[0]['content'] = "The table has been analyzed. Please provide a formal analysis."
+                self.apiPrompt[0]['content'] =("This is the response for the analysis of the table. Please make it"
+                                                "formal")+ self.chatGPTResponse
                 chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
                 self.chatGPTResponse = chat_completion.choices[0].message.content
             else:

@@ -8,6 +8,9 @@ from blocks.analyzeTable import tableAnalysis
 from blocks.reportTable import tableReporting
 from blocks.reportSections import summary, methodology, References, introduction
 from docx import Document
+#clean the cache in the code
+
+
 
 report_name = input("What is the name of the report? ")
 reportGenerator.docFile = f"report\\{report_name}.docx"
@@ -25,6 +28,7 @@ if 'risk assesment' or 'analyze' in report_purpose:
 elif 'most' or 'least' or 'best' or 'worst' in report_purpose:
     report_purpose = "The target company has requested a comparison of the ingredients in their product. "
     back_bone_json = 'settings.json'
+    #report_generation_order = ['tableAnalysis', 'tableReporting', 'summary', 'methodology', 'References']
 
 # Create a Python dictionary with your data
 data = {
