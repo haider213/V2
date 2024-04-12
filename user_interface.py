@@ -9,6 +9,7 @@ from blocks.reportTable import tableReporting
 from blocks.reportSections import summary, methodology, References, introduction
 from docx import Document
 import sys
+import os
 
 # clean the cache in the code
 
@@ -198,5 +199,6 @@ with open(new_json, 'w') as f:
 
 reportGenerator.jsonPath = new_json
 reportGenerator.main()
+os.remove(new_json)
 
 # print(data)
