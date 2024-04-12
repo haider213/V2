@@ -1,0 +1,62 @@
+{
+
+    "simple":
+      {
+
+        "report_style": [
+          "Summary",
+          "Introduction",
+          "Methodology",
+        "Results"],
+
+        "report_type": "simple",
+        "report_generation_order_backbone": [
+          "reportTable",
+        "analyzeTable",
+        "finalSummary",
+        "finalIntroduction"
+        ]
+      },
+    "simple_1": {
+
+      "report_style":[
+        "Summary",
+        "Results",
+        "Conclusion"
+        ],
+
+      "report_generation_order_backbone": [
+        "reportTable",
+        "analyzeTable",
+        "finalSummary",
+        "finalConclusion"
+      ]
+    },
+    "simple_2": {
+
+      "report_style":[
+        "Introduction",
+        "Methodology",
+        "Results",
+        "Conclusion",
+        "Summary"
+
+      ],
+
+      "report_type": "advanced",
+      "report_generation_order_backbone": [
+        "reportTable",
+        "analyzeTable",
+        "finalIntroduction",
+            "finalSummary",
+        "finalConclusion"
+
+      ]
+
+    }
+
+
+
+
+  }
+

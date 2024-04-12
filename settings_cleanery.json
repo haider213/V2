@@ -1,8 +1,8 @@
 {
     "target": {
         "title": "Target product and company for this report:",
-        "product": "handwash",
-        "company": "Haider",
+        "product": "Handwash",
+        "company": "Cleaners",
         "purpose": "The target company has requested a risk assessment of the ingredients in their product. "
     },
     "report_generation_order": [
@@ -13,7 +13,7 @@
     ],
     "reportTable": {
         "blockType": "tableReporting",
-        "excel": "excels\\Cleanery - handwash.xlsx",
+        "excel": "'/mnt/d/PhD/V2/excels/Cleanery - handwash.xlsx",
         "title": "Chemicals used in Analysis:",
         "userPrompts": [
             "Dont include headings, or bullets, just give two paragraph response"

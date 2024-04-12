@@ -11,38 +11,13 @@
 		"reportTable",
 		"analyzeTable",
 		"finalSummary",
-		"finalIntroduction"
+		"finalIntroduction",
+		"finalConclusion"
 
 	],
 
 
-	"reportTable": {
-		"blockType": "tableReporting",
-		"excel":"excels\\Cleanery - handwash.xlsx",
-		"title": "Chemicals used in Analysis:",
-		"userPrompts": [
-			"Dont include headings, or bullets, just give two paragraph response"
-		]
-	},
-	"analyzeTable": {
-		"blockType": "tableAnalysis",
-		"excel":"excels\\Cleanery - handwash.xlsx",
-		"title": "Results of Analysis:",
-		"bubbleChart": {
-			"generate": true,
-			"type": "rankBubbles"
-		},
-		"userPrompts": [
-			"Dont include headings, or bullets, just give one or two paragraph response"
-		]
-	},
-	"finalSummary": {
-		"blockType": "summary",
-		"userPrompts": [
-			"suggest which chemical has the least hazard, based on the results of the analysis"
 
-		]
-	},
 
 	"finalIntroduction": {
 		"blockType": "introduction",
@@ -191,6 +166,18 @@
 			"Start your response with something specific to the target company and product. ideas: {report generator company} did a complete analysis report for the target Product of target company based on these measures etc"
 		]
 	},
+	"conclusion":{
+		"title": "Conclusion",
+		"usePrevResults": true,
+		"systemPrompts": [
+			"You are a helpful assistant, Your task is to create a conclusion for the report"
+		],
+		"userPrompts": [
+			"Generate one paragraph conclusion for this analysis report, the paragram should have more than 12 lines",
+			"Start your response with something specific to the target company and product. ideas: {report generator company} did a complete analysis report for the target Product of target company based on these measures etc"
+		]
+	},
+
 
 
 	"references": {
