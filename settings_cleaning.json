@@ -1,136 +1,40 @@
 {
     "target": {
         "title": "Target product and company for this report:",
-        "products categories": "Fungicides, insecticides & acaricides,  herbicides, wound dressings",
-        "company": "clean",
-        "usage": "These products are used by New Zealand Wine Ltd in their wine fields",
-        "goal": "New Zealand Wine Ltd has asked Hazel to generate a Hazard analysis report for Fungicides, insecticides & acaricides,  herbicides, wound dressings. ",
-        "report goal": "The goal for this report is to find out which chemical has the most and the least hazard. Which chemical should be preferred for a category ",
-        "details": "New Zealand Wine Ltd is New Zealand most popular whine growers with the largest wine fields in the country",
-        "product": "cleaners",
-        "purpose": "The target company has requested a comparison of the ingredients in their product. "
+        "product": "Handwash",
+        "company": "Cleaners",
+        "purpose": "The target company has requested a risk assessment of the ingredients in their product. "
     },
     "report_generation_order": [
-        "reportTableFungicides",
-        "reportTableInsecticides",
-        "reportTableHerbicides",
-        "reportTableWoundDressing",
-        "analyzeTableFungicides",
-        "analyzeTableInsecticides",
-        "analyzeTableHerbicides",
-        "analyzeTableWoundDressing",
+        "reportTable",
+        "analyzeTable",
         "finalSummary",
-        "finalIntroduction",
-        "referencesFungicides",
-        "referencesInsecticides",
-        "referencesHerbicides",
-        "referencesWoundDressing"
+        "finalIntroduction"
     ],
-    "reportTableFungicides": {
+    "reportTable": {
         "blockType": "tableReporting",
-        "excel": "excels\\fungicides.xlsx",
-        "title": "Fungicides used in Analysis:",
+        "excel": "excels\\Cleanery - handwash.xlsx",
+        "title": "Chemicals used in Analysis:",
         "userPrompts": [
-            "The provided table includes only Fungicides, Other type of products like insecticides, herbicides etc, will be provided separately",
-            "generate only for fungicides only",
             "Dont include headings, or bullets, just give two paragraph response"
         ]
     },
-    "reportTableInsecticides": {
-        "blockType": "tableReporting",
-        "excel": "excels\\insecticides.xlsx",
-        "title": "Insecticides and acaricides used in Analysis:",
-        "userPrompts": [
-            "The provided table includes only Insecticides and acaricides, Other type of products like Fungicides, herbicides etc, will be provided separately",
-            "generate only for Insecticides and acaricides only",
-            "Dont include headings, or bullets, just give  two paragraph response"
-        ]
-    },
-    "reportTableHerbicides": {
-        "blockType": "tableReporting",
-        "excel": "excels\\herbicides.xlsx",
-        "title": "Herbicides used in Analysis:",
-        "userPrompts": [
-            "The provided table includes herbicides, Other type of products like insecticides, insecticides etc, will be provided separately",
-            "generate only for herbicides only",
-            "Dont include headings, or bullets, just give two paragraph response"
-        ]
-    },
-    "reportTableWoundDressing": {
-        "blockType": "tableReporting",
-        "excel": "excels\\wound_dressing.xlsx",
-        "title": "Wound dressing used in Analysis:",
-        "userPrompts": [
-            "The provided table includes wound dressing only, Other type of products like insecticides, insecticides etc, will be provided separately",
-            "generate only for wound dressing only",
-            "Dont include headings, or bullets, just give two paragraph response"
-        ]
-    },
-    "analyzeTableFungicides": {
+    "analyzeTable": {
         "blockType": "tableAnalysis",
-        "excel": "excels\\fungicides.xlsx",
-        "title": "Fungicides Analysis:",
+        "excel": "excels\\Cleanery - handwash.xlsx",
+        "title": "Results of Analysis:",
         "bubbleChart": {
             "generate": true,
             "type": "rankBubbles"
         },
         "userPrompts": [
-            "The provided table includes only Fungicides, Other type of products like insecticides, herbicides etc, will be provided separately",
-            "generate only for fungicides only",
-            "Dont include headings, or bullets, just give one or two paragraph response"
-        ]
-    },
-    "analyzeTableInsecticides": {
-        "blockType": "tableAnalysis",
-        "excel": "excels\\insecticides.xlsx",
-        "title": "Insecticides and acaricides Analysis:",
-        "bubbleChart": {
-            "generate": true,
-            "type": "rankBubbles"
-        },
-        "userPrompts": [
-            "The provided table includes only Insecticides and acaricides, Other type of products like Fungicides, herbicides etc, will be provided separately",
-            "generate only for Insecticides and acaricides only",
-            "Dont include headings, or bullets, just give one or two paragraph response"
-        ]
-    },
-    "analyzeTableHerbicides": {
-        "blockType": "tableAnalysis",
-        "excel": "excels\\herbicides.xlsx",
-        "title": "Herbicides Analysis:",
-        "bubbleChart": {
-            "generate": true,
-            "type": "rankBubbles",
-            "zoomRange": [
-                0.5,
-                0.8
-            ]
-        },
-        "userPrompts": [
-            "The provided table includes herbicides, Other type of products like insecticides, insecticides etc, will be provided separately",
-            "generate only for herbicides only",
-            "Dont include headings, or bullets, just give one or two paragraph response"
-        ]
-    },
-    "analyzeTableWoundDressing": {
-        "blockType": "tableAnalysis",
-        "excel": "excels\\wound_dressing.xlsx",
-        "title": "Wound dressing Analysis:",
-        "bubbleChart": {
-            "generate": true,
-            "type": "rankBubbles"
-        },
-        "userPrompts": [
-            "The provided table includes wound dressing only, Other type of products like insecticides, insecticides etc, will be provided separately",
-            "generate only for wound dressing only",
             "Dont include headings, or bullets, just give one or two paragraph response"
         ]
     },
     "finalSummary": {
         "blockType": "summary",
         "userPrompts": [
-            "suggest based on each category type which chemical has the least harm",
-            "summarize comparative analysis for each category here, and suggest 3 chemicals which least hazardeous scores"
+            "suggest which chemical has the least hazard, based on the results of the analysis"
         ]
     },
     "finalIntroduction": {
@@ -140,25 +44,14 @@
             "Start your response with something specific to the target company and product. ideas: {report generator company} did a complete analysis report for the target Product of target company based on these measures etc"
         ]
     },
-    "referencesFungicides": {
-        "blockType": "references",
-        "title": "Fungicides References",
-        "excel": "excels\\fungicides.xlsx"
-    },
-    "referencesInsecticides": {
-        "blockType": "references",
-        "title": "Insecticides References",
-        "excel": "excels\\insecticides.xlsx"
-    },
-    "referencesHerbicides": {
-        "blockType": "references",
-        "title": "Herbicides References",
-        "excel": "excels\\herbicides.xlsx"
-    },
-    "referencesWoundDressing": {
-        "blockType": "references",
-        "title": "Wound Dressing References",
-        "excel": "excels\\wound_dressing.xlsx"
+    "references": {
+        "title": "",
+        "excel": "default.xlsx",
+        "sheet": "Chemicals",
+        "columns": [
+            "Chemical Name",
+            "References"
+        ]
     },
     "tableAnalysis": {
         "title": "Results",
@@ -284,15 +177,6 @@
         "userPrompts": [
             "Generate two paragraphs introduction for this analysis report, the paragram should have more than 12 lines",
             "Start your response with something specific to the target company and product. ideas: {report generator company} did a complete analysis report for the target Product of target company based on these measures etc"
-        ]
-    },
-    "references": {
-        "title": "",
-        "excel": "default.xlsx",
-        "sheet": "Chemicals",
-        "columns": [
-            "Chemical Name",
-            "References"
         ]
     },
     "generator": {

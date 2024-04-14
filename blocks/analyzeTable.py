@@ -10,6 +10,7 @@ import pandas as pd
 from plotly.subplots import make_subplots
 
 
+
 class tableAnalysis:
 
     def __init__(self, cusTable, settings):
@@ -220,19 +221,36 @@ class tableAnalysis:
             print('1- Make it brief')
             print('2- Add more details')
             print('3- Make it formal')
+            print('4-Enter your feedback on the response')
             change_to_prompt = input("Enter the number of your choice: ")
             if change_to_prompt == "1":
-                self.apiPrompt[0]['content'] = "The table has been analyzed."
+                """ Make it brief"""
+                self.apiPrompt[0]['content'] = ("This is the response for the analysis of the table. Please provide a "
+                                               "brief response in one paragraph") + self.chatGPTResponse
                 chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
                 self.chatGPTResponse = chat_completion.choices[0].message.content
+
+                pass
+
             elif change_to_prompt == "2":
-                self.apiPrompt[0]['content'] = "The table has been analyzed. Please provide a detailed analysis."
+
+                self.apiPrompt[0]['content'] = ("This is the response for the analysis of the table. Please provide a "
+                                                "detailed analysis.") + self.chatGPTResponse
                 chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
                 self.chatGPTResponse = chat_completion.choices[0].message.content
             elif change_to_prompt == "3":
-                self.apiPrompt[0]['content'] = "The table has been analyzed. Please provide a formal analysis."
+                self.apiPrompt[0]['content'] = ("This is the response for the analysis of the table. Please make it"
+                                                "formal") + self.chatGPTResponse
                 chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
                 self.chatGPTResponse = chat_completion.choices[0].message.content
+            elif change_to_prompt == "4":
+
+                feedback = input("Enter your feedback on the response: ")
+                self.apiPrompt[0][
+                    'content'] = 'The user gave this feedback:' + feedback + 'about this response:' + self.chatGPTResponse + 'please provide a new response based on the feedback and the previous response.'
+                chat_completion = client.chat.completions.create(messages=self.apiPrompt, model=self.gptModel)
+                self.chatGPTResponse = chat_completion.choices[0].message.content
+
             else:
                 print("Invalid input")
                 sys.exit()
@@ -256,7 +274,12 @@ class tableAnalysis:
             paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
         if self.isBubbleChartRequired:
-            self.figures.append(self.generateBubbleChart(excelManager, zoomVersion=False))
+            fig = self.generateBubbleChart(excelManager, zoomVersion=False)
+            #fig.show()
+            #feedback = input("Enter your feedback on the bubble chart: ")
+            self.figures.append(fig)
+
+
             # If zoomIn Figure Required!
             if self.zoomIn:
                 self.figures.append(self.generateBubbleChart(excelManager, zoomVersion=True))
@@ -504,6 +527,9 @@ class tableAnalysis:
         fig.add_vline(x=1, line_width=0.1, row=1, col=2)
         fig.update_layout(showlegend=False, xaxis_title="Relative Toxicity",
                           yaxis_title="Relative Likelihood of Exposure")
+
+        # feedback = input("Enter your feedback on the bubble chart: ")
+
         # imagePath = "images/fig.png"
         # fig.write_image(imagePath)
         return fig
