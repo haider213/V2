@@ -46,15 +46,18 @@ with open(back_bone_json) as f:
 if report_structure == '0':
     report_generation_order_backbone = options['simple']['report_generation_order_backbone']
     print('The backbone report generation order is: ', report_generation_order_backbone)
+    reportGenerator.headings=['summary', 'introduction', 'methodology', 'results', 'conclusion']
     reportGenerator.choice = 'simple'
 elif report_structure == '1':
     report_generation_order_backbone = options['simple_1']['report_generation_order_backbone']
     print('The backbone report generation order is: ', report_generation_order_backbone)
     reportGenerator.choice = 'simple_1'
+    reportGenerator.headings = ['summary', 'results', 'conclusion']
 elif report_structure == '2':
     report_generation_order_backbone = options['simple_2']['report_generation_order_backbone']
     print('The backbone report generation order is: ', report_generation_order_backbone)
     reportGenerator.choice = 'simple_2'
+    reportGenerator.headings = ['introduction', 'methodology', 'results', 'conclusion', 'summary']
 else:
     print("Invalid input. Please try again")
     sys.exit()
@@ -199,6 +202,6 @@ with open(new_json, 'w') as f:
 
 reportGenerator.jsonPath = new_json
 reportGenerator.main()
-os.remove(new_json)
+#os.remove(new_json)
 
 # print(data)

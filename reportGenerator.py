@@ -10,10 +10,10 @@ import os
 docFile = "report\\Report_cleanery.docx"
 
 document = Document()
-
+headings=[]
 #jsonPath = "settings_cleanery_2.json"
 jsonPath = "settings_cleanery_2.json"
-optionsjson = 'options.json'
+#optionsjson = 'options.json'
 portfolios= []
 choice = ''  # 0 for simple, 1 for simple_1, 2 for simple_2
 
@@ -23,9 +23,11 @@ def main():
 
     with open(jsonPath) as f:
         settings = json.load(f)
+    """
     with open(optionsjson) as f:
         options = json.load(f)
     report_headings = options[choice]["report_style"]
+    """
 
     clientOpenAI = OpenAI(
         # defaults to os.environ.get("OPENAI_API_KEY")
@@ -83,7 +85,7 @@ def main():
 
     print(f"Generating the Document Now!")
 
-    lwr_headings= [heading.lower() for heading in report_headings]
+    lwr_headings= [heading.lower() for heading in headings]
 
     print(lwr_headings)
     for heading in lwr_headings:
