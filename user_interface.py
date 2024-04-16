@@ -9,10 +9,25 @@ from blocks.reportTable import tableReporting
 from blocks.reportSections import summary, methodology, References, introduction
 from docx import Document
 import sys
+import pandas as pd
 import os
 
 # clean the cache in the code
 
+# Importing the PIL library
+from PIL import Image
+from PIL import ImageDraw
+
+from PIL import Image, ImageDraw, ImageFont
+from datetime import datetime
+
+today = datetime.today().strftime('%Y-%m-%d')
+
+title_img = Image.open('title_bg2.png')
+fnt = ImageFont.truetype("arial.ttf", 50, encoding="unic")
+fnt_date = ImageFont.truetype("arial.ttf", 30, encoding="unic")
+d = ImageDraw.Draw(title_img)
+from reportGenerator import appendix_data
 
 report_name = input("What is the name of the report? ")
 reportGenerator.docFile = f"report\\{report_name}.docx"
@@ -22,7 +37,10 @@ company_name = input("What is the name of the company? ")
 report_purpose = input("What is the purpose of the report? ")
 
 # report_purpose = input("What is the purpose of the report? ")
-
+d.multiline_text((10, 600), f"Chemical\n Analysis\n {report_name}", font=fnt, fill=(255, 255, 255))
+d.multiline_text((10, 800), today, font=fnt_date, fill=(255, 255, 255))
+title_img.save(f'title_bg2_{report_name}.png')
+reportGenerator.title_img = f'title_bg2_{report_name}.png'
 back_bone_json = 'settings.json'
 new_json = f"settings_{report_name}.json"
 
@@ -46,7 +64,7 @@ with open(back_bone_json) as f:
 if report_structure == '0':
     report_generation_order_backbone = options['simple']['report_generation_order_backbone']
     print('The backbone report generation order is: ', report_generation_order_backbone)
-    reportGenerator.headings=['summary', 'introduction', 'methodology', 'results', 'conclusion']
+    reportGenerator.headings = ['summary', 'introduction', 'methodology', 'results', 'conclusion']
     reportGenerator.choice = 'simple'
 elif report_structure == '1':
     report_generation_order_backbone = options['simple_1']['report_generation_order_backbone']
@@ -68,6 +86,8 @@ for i in range(number_of_portfolio_analysis):
     reportGenerator.portfolios.append(portfolio_name)
     portfolio_description = input("What is the description of the portfolio? ")
     portfolio_excel = input(f"Path to the excel for {portfolio_name}? ")
+    weightages = pd.read_excel('excels\\'+portfolio_excel, sheet_name='Graph&Weightings', skiprows=range(1, 55))
+    reportGenerator.appendix_data = pd.concat([reportGenerator.appendix_data, weightages], axis=0)
     for elements in report_generation_order_backbone:
         if elements == 'reportTable':
             name_of_block = 'reportTable' + portfolio_name
@@ -147,8 +167,7 @@ if report_structure == '0' or '2':
 
     settings['finalConclusion'] = data['finalConclusion']
 
-
-    #actual_report_generation_order.append('methodology')
+    # actual_report_generation_order.append('methodology')
 
 elif report_structure == '1':
     actual_report_generation_order.append("finalSummary")
@@ -162,7 +181,7 @@ elif report_structure == '1':
         }
     }
     settings['finalSummary'] = data['finalSummary']
-    #actual_report_generation_order.append("finalConclusion")
+    # actual_report_generation_order.append("finalConclusion")
     data = {
         "finalConclusion": {
             "blockType": "conclusion",
@@ -173,8 +192,6 @@ elif report_structure == '1':
         }
     }
     actual_report_generation_order.append("finalConclusion")
-
-
 
 print('The actual report generation order is: ', actual_report_generation_order)
 
@@ -189,7 +206,6 @@ data = {
 
 }
 
-
 settings['target']['title'] = data['target']['title']
 settings['target']['product'] = data['target']['product']
 settings['target']['company'] = data['target']['company']
@@ -202,6 +218,6 @@ with open(new_json, 'w') as f:
 
 reportGenerator.jsonPath = new_json
 reportGenerator.main()
-#os.remove(new_json)
+# os.remove(new_json)
 
 # print(data)

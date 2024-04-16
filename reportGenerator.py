@@ -6,21 +6,29 @@ from blocks.reportTable import tableReporting
 from blocks.reportSections import summary, methodology, References, introduction, conclusion
 from docx import Document
 import os
+from docx.shared import Inches
+import pandas as pd
+
+title_img = 'title_new.png'
+appendix_data = pd.read_excel(f'excels\\Cleanery - handwash.xlsx', sheet_name='Graph&Weightings', skiprows=range(1, 55))
+
 
 docFile = "report\\Report_cleanery.docx"
 
 document = Document()
-headings=[]
-#jsonPath = "settings_cleanery_2.json"
+headings = []
+# jsonPath = "settings_cleanery_2.json"
 jsonPath = "settings_cleanery_2.json"
-#optionsjson = 'options.json'
-portfolios= []
+# optionsjson = 'options.json'
+portfolios = []
 choice = ''  # 0 for simple, 1 for simple_1, 2 for simple_2
 
 
 def main():
     # ask for the order of presentation
+    #appendix_data = pd.DataFrame()
 
+    global appendix_data
     with open(jsonPath) as f:
         settings = json.load(f)
     """
@@ -85,7 +93,15 @@ def main():
 
     print(f"Generating the Document Now!")
 
-    lwr_headings= [heading.lower() for heading in headings]
+    lwr_headings = [heading.lower() for heading in headings]
+
+    p = document.add_paragraph()
+    r = p.add_run()
+    # r.add_text('')
+    r.add_picture(title_img, width=Inches(6), height=Inches(9))
+    # r.add_text(' do you like it?')
+
+    # document.save('demo.docx')
 
     print(lwr_headings)
     for heading in lwr_headings:
@@ -94,28 +110,34 @@ def main():
             for i in range(len(generationBlockTypes)):
                 if generationBlockTypes[i] == 'summary':
                     generationBlocks[i].generateReport(document)
-                    #lwr_headings.remove('summary')
+                    # lwr_headings.remove('summary')
         if heading == 'introduction':
             for i in range(len(generationBlockTypes)):
                 if generationBlockTypes[i] == 'introduction':
                     generationBlocks[i].generateReport(document)
-                    #lwr_headings.remove('introduction')
+                    # lwr_headings.remove('introduction')
         if heading == 'methodology':
             methBlock = methodology(settings)
             methBlock.generateReport(document)
-            #lwr_headings.remove('methodology')
+            # lwr_headings.remove('methodology')
         if heading == 'results':
 
             for i in range(len(generationBlockTypes)):
                 if generationBlockTypes[i] == 'tableReporting':
                     generationBlocks[i].generateReport(document)
-                    #lwr_headings.remove('results')
+                    # lwr_headings.remove('results')
         if heading == 'conclusion':
             for i in range(len(generationBlockTypes)):
                 if generationBlockTypes[i] == 'conclusion':
                     generationBlocks[i].generateReport(document)
-                    #lwr_headings.remove('conclusion')
-
+        appendix_data = appendix_data.fillna('')
+    t = document.add_table(appendix_data.shape[0] + 1, appendix_data.shape[1])
+    for j in range(appendix_data.shape[-1]):
+        t.cell(0, j).text = appendix_data.columns[j]
+    for i in range(appendix_data.shape[0]):
+        for j in range(appendix_data.shape[-1]):
+            t.cell(i + 1, j).text = str(appendix_data.values[i, j])
+                # lwr_headings.remove('conclusion')
 
     """
     for headings in lwr_headings:
@@ -207,6 +229,11 @@ def main():
                 if generationBlockTypes[i] == 'references':
                     generationBlocks[i].generateReport(document, excelManager=excelMan)
         """
+
+
+
+
+
 
     document.save(docFile)
     print("Report Has Been Generated!!!")
